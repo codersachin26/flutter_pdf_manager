@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:pdf_manager/screens/pdf_list_screen.dart';
 
-class CardConatainer extends StatelessWidget {
+class CardContainer extends StatelessWidget {
   final IconData iconData;
   final String name;
-  final Color? color;
+  final Color? iconColor;
 
-  const CardConatainer(
+  const CardContainer(
       {Key? key,
       required this.iconData,
       required this.name,
-      required this.color})
+      required this.iconColor})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class CardConatainer extends StatelessWidget {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(iconData, color: color, size: 45.0),
+          Icon(iconData, color: iconColor, size: 45.0),
           Text(name)
         ],
       )),
