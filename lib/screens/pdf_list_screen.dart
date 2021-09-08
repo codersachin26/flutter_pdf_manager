@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pdf_manager/widgets/pdf_file_tile.dart';
 
 class PdfListScreen extends StatefulWidget {
   final String name;
@@ -32,6 +33,8 @@ class PdfList extends StatefulWidget {
 class _PdfListState extends State<PdfList> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      child: PdfTile(file: "file_name", isPicked: false),
+    );
   }
 }
