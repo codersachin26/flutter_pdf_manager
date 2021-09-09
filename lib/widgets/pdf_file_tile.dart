@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:pdf_manager/models/pdf_manager_model.dart';
 
-class PdfTile extends StatelessWidget {
-  final file;
+class PdfTile extends StatefulWidget {
+  final pdfFile;
   final bool isPicked;
 
-  PdfTile({Key? key, required this.file, required this.isPicked})
+  PdfTile({Key? key, required this.pdfFile, required this.isPicked})
       : super(key: key);
+
+  @override
+  _PdfTileState createState() => _PdfTileState();
+}
+
+class _PdfTileState extends State<PdfTile> {
+  Color color = Colors.grey;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -30,16 +38,19 @@ class PdfTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      file,
-                      style: TextStyle(fontSize: 18),
+                      widget.pdfFile.name,
+                      style: TextStyle(fontSize: 15),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    Text("4.00MB",
+                    Text(widget.pdfFile.size,
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w100))
+                            fontSize: 14, fontWeight: FontWeight.w100))
                   ]),
             ),
-            isPicked
-                ? PickedFile()
+            widget.isPicked
+                ? PickedFile(
+                    color: color,
+                  )
                 : SizedBox(
                     width: 10,
                   )
@@ -47,7 +58,19 @@ class PdfTile extends StatelessWidget {
         ),
       ),
       onTap: () {
-        if (isPicked) {
+        print('file tap');
+        if (widget.isPicked) {
+          if (PdfManager.pickedFilePaths.contains(widget.pdfFile.path)) {
+            PdfManager.pickedFilePaths.remove(widget.pdfFile.path);
+            setState(() {
+              color = Colors.grey;
+            });
+          } else {
+            PdfManager.pickedFilePaths.add(widget.pdfFile.path);
+            setState(() {
+              color = Colors.deepPurple;
+            });
+          }
         } else {}
       },
     );
@@ -55,12 +78,13 @@ class PdfTile extends StatelessWidget {
 }
 
 class PickedFile extends StatelessWidget {
-  const PickedFile({Key? key}) : super(key: key);
+  final color;
+  const PickedFile({Key? key, this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: Icon(Icons.done_sharp, size: 30, color: Colors.grey));
+        child: Icon(Icons.done_sharp, size: 30, color: color ?? Colors.grey));
   }
 }
 

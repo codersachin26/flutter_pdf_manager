@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pdf_manager/widgets/card_container.dart';
+import 'package:pdf_manager/widgets/tool_card_container.dart';
 
 class ToolsContainer extends StatelessWidget {
   @override
@@ -16,18 +16,22 @@ class ToolsContainer extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              CardContainer(
-                  iconData: Icons.image,
-                  name: "img to pdf",
-                  iconColor: Colors.red),
-              CardContainer(
+              ToolCardContainer(
+                iconData: Icons.image,
+                name: "img to pdf",
+                iconColor: Colors.red,
+                onTap: () {},
+              ),
+              ToolCardContainer(
                   iconData: Icons.enhanced_encryption_rounded,
                   name: "encrypt",
-                  iconColor: Colors.red),
-              CardContainer(
+                  iconColor: Colors.red,
+                  onTap: () {}),
+              ToolCardContainer(
                   iconData: Icons.compress_rounded,
                   name: "compress",
-                  iconColor: Colors.red)
+                  iconColor: Colors.red,
+                  onTap: () {})
             ],
           )
         ],

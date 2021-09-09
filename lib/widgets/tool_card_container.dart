@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:pdf_manager/screens/pdf_list_screen.dart';
 
-class CardContainer extends StatelessWidget {
+class ToolCardContainer extends StatelessWidget {
   final IconData iconData;
   final String name;
   final Color? iconColor;
-  final String dirPath;
+  final VoidCallback onTap;
 
-  const CardContainer(
+  const ToolCardContainer(
       {Key? key,
       required this.iconData,
       required this.name,
       required this.iconColor,
-      required this.dirPath})
+      required this.onTap})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -25,13 +24,7 @@ class CardContainer extends StatelessWidget {
           Text(name)
         ],
       )),
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    PdfListScreen(name: name, dirPath: dirPath)));
-      },
+      onTap: onTap,
     );
   }
 }
