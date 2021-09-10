@@ -69,7 +69,7 @@ class _PdfListState extends State<PdfList> {
               return ListView.builder(
                   itemCount: snapshot.data?.length,
                   itemBuilder: (context, index) => PdfTile(
-                      pdfFile: snapshot.data?[index],
+                      pdfFile: snapshot.data![index],
                       isPicked: widget.isPicked));
             } else {
               return Center(child: CircularProgressIndicator());

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pdf_manager/models/pdf_file_model.dart';
 import 'package:pdf_manager/models/pdf_manager_model.dart';
+import 'package:pdf_manager/screens/pdf_view_screen.dart';
 
 class PdfTile extends StatefulWidget {
-  final pdfFile;
+  final PdfFile pdfFile;
   final bool isPicked;
 
   PdfTile({Key? key, required this.pdfFile, required this.isPicked})
@@ -71,7 +73,12 @@ class _PdfTileState extends State<PdfTile> {
               color = Colors.deepPurple;
             });
           }
-        } else {}
+        } else {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PdfViewScreen(pdf: widget.pdfFile)));
+        }
       },
     );
   }
