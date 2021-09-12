@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pdf_manager/models/pdf_manager_model.dart';
 import 'package:pdf_manager/models/pdf_file_model.dart';
+import 'package:pdf_manager/widgets/edit_functions_sheet.dart';
 import 'package:pdf_manager/widgets/pdf_file_tile.dart';
 
 class PdfListScreen extends StatefulWidget {
@@ -18,6 +19,9 @@ class _PdfListScreenState extends State<PdfListScreen> {
   void _onEdit() {
     setState(() {
       isPicked = !isPicked;
+      print(PdfManager.pickedFilePaths.length);
+      PdfManager.pickedFilePaths.clear();
+      print(PdfManager.pickedFilePaths.length);
     });
   }
 
@@ -60,21 +64,29 @@ class PdfList extends StatefulWidget {
 class _PdfListState extends State<PdfList> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: MediaQuery.of(context).size.height * .87,
-        child: FutureBuilder<List<PdfFile>>(
-          future: PdfManager.getPdfs(widget.dirPath),
-          builder: (context, AsyncSnapshot<List<PdfFile>> snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                  itemCount: snapshot.data?.length,
-                  itemBuilder: (context, index) => PdfTile(
-                      pdfFile: snapshot.data![index],
-                      isPicked: widget.isPicked));
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          },
-        ));
+    return Stack(
+      alignment: AlignmentDirectional.bottomEnd,
+      children: [
+        Container(
+            height: widget.isPicked
+                ? MediaQuery.of(context).size.height * .89
+                : MediaQuery.of(context).size.height * .87,
+            child: FutureBuilder<List<PdfFile>>(
+              future: PdfManager.getPdfs(widget.dirPath),
+              builder: (context, AsyncSnapshot<List<PdfFile>> snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                      itemCount: snapshot.data?.length,
+                      itemBuilder: (context, index) => PdfTile(
+                          pdfFile: snapshot.data![index],
+                          isPicked: widget.isPicked));
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            )),
+        widget.isPicked ? EditSheet() : Container()
+      ],
+    );
   }
 }

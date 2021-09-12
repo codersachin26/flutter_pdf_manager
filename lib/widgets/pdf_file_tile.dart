@@ -15,7 +15,6 @@ class PdfTile extends StatefulWidget {
 }
 
 class _PdfTileState extends State<PdfTile> {
-  Color color = Colors.grey;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -51,7 +50,10 @@ class _PdfTileState extends State<PdfTile> {
             ),
             widget.isPicked
                 ? PickedFile(
-                    color: color,
+                    color:
+                        PdfManager.pickedFilePaths.contains(widget.pdfFile.path)
+                            ? Colors.deepPurple
+                            : Colors.grey,
                   )
                 : SizedBox(
                     width: 10,
@@ -64,14 +66,10 @@ class _PdfTileState extends State<PdfTile> {
         if (widget.isPicked) {
           if (PdfManager.pickedFilePaths.contains(widget.pdfFile.path)) {
             PdfManager.pickedFilePaths.remove(widget.pdfFile.path);
-            setState(() {
-              color = Colors.grey;
-            });
+            setState(() {});
           } else {
             PdfManager.pickedFilePaths.add(widget.pdfFile.path);
-            setState(() {
-              color = Colors.deepPurple;
-            });
+            setState(() {});
           }
         } else {
           Navigator.push(
