@@ -85,7 +85,7 @@ class _PdfListState extends State<PdfList> {
                 }
               },
             )),
-        widget.isPicked ? EditSheet() : Container()
+        widget.isPicked ? EditBottomSheet() : Container()
       ],
     );
   }

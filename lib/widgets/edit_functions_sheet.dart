@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pdf_manager/widgets/custom_container.dart';
 
-class EditSheet extends StatelessWidget {
+class EditBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
