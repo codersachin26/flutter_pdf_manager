@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pdf_manager/models/pdf_manager_model.dart';
+import 'package:pdf_manager/widgets/bottom_sheets.dart';
 import 'package:pdf_manager/widgets/custom_container.dart';
 
 late _EditBottomSheetState editBottomSheetState;
 
 class EditBottomSheet extends StatefulWidget {
+  final String dirName;
+
+  const EditBottomSheet({Key? key, required this.dirName}) : super(key: key);
   @override
   _EditBottomSheetState createState() {
     editBottomSheetState = _EditBottomSheetState();
@@ -27,7 +31,10 @@ class _EditBottomSheetState extends State<EditBottomSheet> {
             color: PdfManager.pickedFilePaths.isNotEmpty
                 ? Colors.black
                 : Colors.grey,
-            onTap: () {},
+            onTap: () {
+              if (PdfManager.pickedFilePaths.isNotEmpty)
+                movePdfBottomSheet(context, widget.dirName);
+            },
           ),
           CustomContainer(
             iconData: Icons.delete,

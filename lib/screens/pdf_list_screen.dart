@@ -43,18 +43,23 @@ class _PdfListScreenState extends State<PdfListScreen> {
             ],
           ),
           body: PdfList(
-            dirPath: widget.dirPath,
-            isPicked: isPicked,
-          )),
+              dirPath: widget.dirPath,
+              isPicked: isPicked,
+              dirName: widget.name)),
     );
   }
 }
 
 // pdf list container
 class PdfList extends StatefulWidget {
+  final String dirName;
   final String dirPath;
   final isPicked;
-  const PdfList({Key? key, required this.dirPath, required this.isPicked})
+  const PdfList(
+      {Key? key,
+      required this.dirPath,
+      required this.isPicked,
+      required this.dirName})
       : super(key: key);
 
   @override
@@ -85,7 +90,11 @@ class _PdfListState extends State<PdfList> {
                 }
               },
             )),
-        widget.isPicked ? EditBottomSheet() : Container()
+        widget.isPicked
+            ? EditBottomSheet(
+                dirName: widget.dirName,
+              )
+            : Container()
       ],
     );
   }

@@ -5,11 +5,29 @@ import 'package:pdf_manager/utils/get_file_size.dart';
 
 class PdfManager {
   static List<String> pickedFilePaths = <String>[];
-  // remove file from disk
+
+  // remove pdf file from disk
   static void removeFiles(List<String> filePath) {}
 
-  // move file from disk
-  static void moveFile(List<String> filePath, String from, String to) {}
+  // rename pdf file
+  static void renamePdfFile(String name) {}
+
+  // move pdf files to new path
+  static void moveFile(String to) async {
+    while (pickedFilePaths.isNotEmpty) {
+      final filePath = pickedFilePaths.removeLast();
+      File sourceFile = File(filePath);
+      try {
+        await sourceFile.rename(
+            '/storage/emulated/0/Pdf Manager/$to/${filePath.split('/').last}');
+      } on FileSystemException catch (e) {
+        final newFile = await sourceFile.copy(
+            '/storage/emulated/0/Pdf Manager/$to/${filePath.split('/').last}');
+        await sourceFile.delete();
+        print(newFile);
+      }
+    }
+  }
 
   // return dir pdfs
   static Future<List<PdfFile>> getPdfs(String dirPath) async {
