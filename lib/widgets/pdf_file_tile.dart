@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pdf_manager/models/pdf_file_model.dart';
 import 'package:pdf_manager/models/pdf_manager_model.dart';
 import 'package:pdf_manager/screens/pdf_view_screen.dart';
+import 'package:pdf_manager/widgets/edit_bottom_sheet.dart';
 
 class PdfTile extends StatefulWidget {
   final PdfFile pdfFile;
@@ -49,7 +50,7 @@ class _PdfTileState extends State<PdfTile> {
                   ]),
             ),
             widget.isPicked
-                ? PickedFile(
+                ? DoneIcon(
                     color:
                         PdfManager.pickedFilePaths.contains(widget.pdfFile.path)
                             ? Colors.deepPurple
@@ -62,13 +63,14 @@ class _PdfTileState extends State<PdfTile> {
         ),
       ),
       onTap: () {
-        print('file tap');
         if (widget.isPicked) {
           if (PdfManager.pickedFilePaths.contains(widget.pdfFile.path)) {
             PdfManager.pickedFilePaths.remove(widget.pdfFile.path);
+            editBottomSheetState.setState(() {});
             setState(() {});
           } else {
             PdfManager.pickedFilePaths.add(widget.pdfFile.path);
+            editBottomSheetState.setState(() {});
             setState(() {});
           }
         } else {
@@ -82,9 +84,9 @@ class _PdfTileState extends State<PdfTile> {
   }
 }
 
-class PickedFile extends StatelessWidget {
+class DoneIcon extends StatelessWidget {
   final color;
-  const PickedFile({Key? key, this.color}) : super(key: key);
+  const DoneIcon({Key? key, this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

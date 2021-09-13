@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pdf_manager/models/pdf_manager_model.dart';
 import 'package:pdf_manager/models/pdf_file_model.dart';
-import 'package:pdf_manager/widgets/edit_functions_sheet.dart';
+import 'package:pdf_manager/widgets/edit_bottom_sheet.dart';
 import 'package:pdf_manager/widgets/pdf_file_tile.dart';
 
 class PdfListScreen extends StatefulWidget {
