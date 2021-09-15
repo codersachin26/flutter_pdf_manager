@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pdf_manager/models/pdf_manager_model.dart';
 import 'package:pdf_manager/screens/pdf_list_screen.dart';
+import 'package:provider/provider.dart';
 
 class CardContainer extends StatelessWidget {
   final IconData iconData;
@@ -26,6 +28,7 @@ class CardContainer extends StatelessWidget {
         ],
       )),
       onTap: () {
+        Provider.of<PdfManager>(context, listen: false).setMarkingState(false);
         Navigator.push(
             context,
             MaterialPageRoute(

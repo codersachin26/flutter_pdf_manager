@@ -20,17 +20,17 @@ class DirsContainer extends StatelessWidget {
                     iconData: Icons.picture_as_pdf_rounded,
                     name: "All Pdf",
                     iconColor: Colors.red,
-                    dirPath: '/storage/emulated/0/'),
+                    dirPath: '/storage/emulated/0'),
                 CardContainer(
                     iconData: Icons.download_for_offline,
                     name: "Download",
                     iconColor: Colors.green,
-                    dirPath: '/storage/emulated/0/Download/'),
+                    dirPath: '/storage/emulated/0/Download'),
                 CardContainer(
                     iconData: Icons.document_scanner_rounded,
                     name: "Telegram",
                     iconColor: Colors.lightBlue,
-                    dirPath: '/storage/emulated/0/Telegram/Telegram Documents/')
+                    dirPath: '/storage/emulated/0/Telegram/Telegram Documents')
               ],
             ),
             Column(
@@ -41,17 +41,17 @@ class DirsContainer extends StatelessWidget {
                     name: "WhatsApp",
                     iconColor: Colors.red,
                     dirPath:
-                        '/storage/emulated/0/WhatsApp/Media/WhatsApp Documents/'),
+                        '/storage/emulated/0/WhatsApp/Media/WhatsApp Documents'),
                 CardContainer(
                     iconData: Icons.save_alt_rounded,
                     name: "Save",
                     iconColor: Colors.pink,
-                    dirPath: '/storage/emulated/0/Pdf Manager/Save/'),
+                    dirPath: '/storage/emulated/0/Pdf Manager/Save'),
                 CardContainer(
                     iconData: Icons.favorite_border_rounded,
                     name: "Favorites",
                     iconColor: Colors.red[900],
-                    dirPath: '/storage/emulated/0/Pdf Manager/Favorites/')
+                    dirPath: '/storage/emulated/0/Pdf Manager/Favorites')
               ],
             ),
             Column(
@@ -63,7 +63,7 @@ class DirsContainer extends StatelessWidget {
                       iconData: Icons.business_center_rounded,
                       name: "Office",
                       iconColor: Colors.black54,
-                      dirPath: '/storage/emulated/0/Pdf Manager/Office/'),
+                      dirPath: '/storage/emulated/0/Pdf Manager/Office'),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 22.0),

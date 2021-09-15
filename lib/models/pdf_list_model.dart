@@ -1,10 +1,10 @@
 import 'package:pdf_manager/models/pdf_file_model.dart';
 
-class PdfList {
+class PdfListDir {
   final String name;
   final List<PdfFile> pdfFiles;
 
-  PdfList({required this.name, required this.pdfFiles});
+  PdfListDir({required this.name, required this.pdfFiles});
 
   void add(PdfFile file) {
     this.pdfFiles.add(file);

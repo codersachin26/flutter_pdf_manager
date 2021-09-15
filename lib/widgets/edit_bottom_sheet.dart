@@ -2,65 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:pdf_manager/models/pdf_manager_model.dart';
 import 'package:pdf_manager/widgets/bottom_sheets.dart';
 import 'package:pdf_manager/widgets/custom_container.dart';
+import 'package:provider/provider.dart';
 
-late _EditBottomSheetState editBottomSheetState;
+class EditBottomSheet extends StatelessWidget {
+  final dirName;
 
-class EditBottomSheet extends StatefulWidget {
-  final String dirName;
-
-  const EditBottomSheet({Key? key, required this.dirName}) : super(key: key);
-  @override
-  _EditBottomSheetState createState() {
-    editBottomSheetState = _EditBottomSheetState();
-    return editBottomSheetState;
-  }
-}
-
-class _EditBottomSheetState extends State<EditBottomSheet> {
+  const EditBottomSheet({Key? key, this.dirName}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(color: Colors.grey.shade200.withOpacity(.9)),
-      height: 50,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          CustomContainer(
-            iconData: Icons.cut,
-            name: "Move",
-            color: PdfManager.pickedFilePaths.isNotEmpty
-                ? Colors.black
-                : Colors.grey,
-            onTap: () {
-              if (PdfManager.pickedFilePaths.isNotEmpty)
-                movePdfBottomSheet(context, widget.dirName);
-            },
-          ),
-          CustomContainer(
-            iconData: Icons.delete,
-            name: "Delete",
-            color: PdfManager.pickedFilePaths.isNotEmpty
-                ? Colors.black
-                : Colors.grey,
-            onTap: () {},
-          ),
-          CustomContainer(
-            iconData: Icons.picture_as_pdf_outlined,
-            name: "Tools",
-            color: PdfManager.pickedFilePaths.isNotEmpty
-                ? Colors.black
-                : Colors.grey,
-            onTap: () {},
-          ),
-          CustomContainer(
-            iconData: Icons.file_copy,
-            name: "Rename",
-            color: PdfManager.pickedFilePaths.length == 1
-                ? Colors.black
-                : Colors.grey,
-            onTap: () {},
-          )
-        ],
+    return Consumer<PdfManager>(
+      builder: (context, pdfManager, _) => Container(
+        decoration: BoxDecoration(color: Colors.grey.shade200.withOpacity(.9)),
+        height: 50,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            CustomContainer(
+              iconData: Icons.cut,
+              name: "Move",
+              color: pdfManager.markedCount != 0 ? Colors.black : Colors.grey,
+              onTap: () {
+                if (pdfManager.markedCount != 0)
+                  movePdfBottomSheet(context, dirName);
+              },
+            ),
+            CustomContainer(
+              iconData: Icons.delete,
+              name: "Delete",
+              color: pdfManager.markedCount != 0 ? Colors.black : Colors.grey,
+              onTap: () {},
+            ),
+            CustomContainer(
+              iconData: Icons.picture_as_pdf_outlined,
+              name: "Tools",
+              color: pdfManager.markedCount != 0 ? Colors.black : Colors.grey,
+              onTap: () {},
+            ),
+            CustomContainer(
+              iconData: Icons.file_copy,
+              name: "Rename",
+              color: pdfManager.markedCount == 1 ? Colors.black : Colors.grey,
+              onTap: () {},
+            )
+          ],
+        ),
       ),
     );
   }

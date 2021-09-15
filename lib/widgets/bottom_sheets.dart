@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pdf_manager/models/pdf_manager_model.dart';
+import 'package:provider/provider.dart';
 
 void movePdfBottomSheet(BuildContext context, String dirName) {
+  final pdfManager = Provider.of<PdfManager>(context, listen: false);
   showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
@@ -45,8 +47,10 @@ void movePdfBottomSheet(BuildContext context, String dirName) {
                         ),
                       ),
                       onTap: () {
-                        PdfManager.moveFile('Favorites/');
+                        pdfManager.moveFile('Favorites');
+
                         Navigator.pop(context);
+                        pdfManager.setMarkingState(!pdfManager.isMarking);
                       },
                     ),
                   if (dirName != 'Office')
@@ -69,11 +73,13 @@ void movePdfBottomSheet(BuildContext context, String dirName) {
                         ),
                       ),
                       onTap: () {
-                        PdfManager.moveFile('Office/');
+                        pdfManager.moveFile('Office');
+
                         Navigator.pop(context);
+                        pdfManager.setMarkingState(!pdfManager.isMarking);
                       },
                     ),
-                  if (dirName != 'Download')
+                  if (dirName != 'Save')
                     InkWell(
                       child: Container(
                         child: Row(
@@ -86,15 +92,17 @@ void movePdfBottomSheet(BuildContext context, String dirName) {
                               width: 7,
                             ),
                             Text(
-                              "Download",
+                              "Save",
                               style: TextStyle(fontSize: 17),
                             )
                           ],
                         ),
                       ),
                       onTap: () {
-                        PdfManager.moveFile('Download/');
+                        pdfManager.moveFile('Save');
+
                         Navigator.pop(context);
+                        pdfManager.setMarkingState(!pdfManager.isMarking);
                       },
                     ),
                   SizedBox(

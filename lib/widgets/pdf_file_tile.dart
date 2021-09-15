@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:pdf_manager/models/pdf_file_model.dart';
 import 'package:pdf_manager/models/pdf_manager_model.dart';
 import 'package:pdf_manager/screens/pdf_view_screen.dart';
-import 'package:pdf_manager/widgets/edit_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 
 class PdfTile extends StatefulWidget {
   final PdfFile pdfFile;
-  final bool isPicked;
 
-  PdfTile({Key? key, required this.pdfFile, required this.isPicked})
-      : super(key: key);
+  PdfTile({Key? key, required this.pdfFile}) : super(key: key);
 
   @override
   _PdfTileState createState() => _PdfTileState();
@@ -18,6 +16,8 @@ class PdfTile extends StatefulWidget {
 class _PdfTileState extends State<PdfTile> {
   @override
   Widget build(BuildContext context) {
+    final pdfManager = Provider.of<PdfManager>(context, listen: false);
+
     return InkWell(
       child: Container(
         height: MediaQuery.of(context).size.height * .11,
@@ -49,12 +49,11 @@ class _PdfTileState extends State<PdfTile> {
                             fontSize: 14, fontWeight: FontWeight.w100))
                   ]),
             ),
-            widget.isPicked
+            pdfManager.isMarking
                 ? DoneIcon(
-                    color:
-                        PdfManager.pickedFilePaths.contains(widget.pdfFile.path)
-                            ? Colors.deepPurple
-                            : Colors.grey,
+                    color: pdfManager.isMarked(widget.pdfFile.name)
+                        ? Colors.deepPurple
+                        : Colors.grey,
                   )
                 : SizedBox(
                     width: 10,
@@ -63,16 +62,9 @@ class _PdfTileState extends State<PdfTile> {
         ),
       ),
       onTap: () {
-        if (widget.isPicked) {
-          if (PdfManager.pickedFilePaths.contains(widget.pdfFile.path)) {
-            PdfManager.pickedFilePaths.remove(widget.pdfFile.path);
-            editBottomSheetState.setState(() {});
-            setState(() {});
-          } else {
-            PdfManager.pickedFilePaths.add(widget.pdfFile.path);
-            editBottomSheetState.setState(() {});
-            setState(() {});
-          }
+        if (pdfManager.isMarking) {
+          final pdfManager = Provider.of<PdfManager>(context, listen: false);
+          pdfManager.marked(widget.pdfFile);
         } else {
           Navigator.push(
               context,
