@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pdf_manager/models/pdf_manager_model.dart';
 import 'package:pdf_manager/widgets/bottom_sheets.dart';
 import 'package:pdf_manager/widgets/custom_container.dart';
+import 'package:pdf_manager/widgets/dialogs.dart';
 import 'package:provider/provider.dart';
 
 class EditBottomSheet extends StatelessWidget {
@@ -30,7 +31,11 @@ class EditBottomSheet extends StatelessWidget {
               iconData: Icons.delete,
               name: "Delete",
               color: pdfManager.markedCount != 0 ? Colors.black : Colors.grey,
-              onTap: () {},
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => deleteAlertDialog(context, dirName));
+              },
             ),
             CustomContainer(
               iconData: Icons.picture_as_pdf_outlined,

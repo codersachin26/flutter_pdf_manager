@@ -9,7 +9,7 @@ class PdfManager extends ChangeNotifier {
   List<PdfFile> _markedPdfFile = <PdfFile>[];
   bool isMarking = false;
   static const _dirPaths = {
-    '0': '/storage/emulated/0',
+    'All Pdf': '/storage/emulated/0',
     'Download': '/storage/emulated/0/Download',
     'Telegram': '/storage/emulated/0/Telegram/Telegram Documents',
     'WhatsApp': '/storage/emulated/0/WhatsApp/Media/WhatsApp Documents',
@@ -24,7 +24,7 @@ class PdfManager extends ChangeNotifier {
   int get markedCount => _markedPdfFile.length;
 
   // remove pdf file from disk
-  void removeFiles(String listName) async {
+  Future<void> removeFiles(String listName) async {
     while (_markedPdfFile.isNotEmpty) {
       final PdfFile file = _markedPdfFile.removeLast();
       File deleteFile = File(file.path);
@@ -33,7 +33,7 @@ class PdfManager extends ChangeNotifier {
       listDir.remove(file);
       _pdfListDirs[listName] = listDir;
     }
-    _markedPdfFile.clear();
+
     notifyListeners();
   }
 
