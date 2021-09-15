@@ -52,7 +52,7 @@ class PdfManager extends ChangeNotifier {
   }
 
   // move pdf files to new path
-  void moveFile(String to) async {
+  Future<void> moveFile(String to) async {
     while (_markedPdfFile.isNotEmpty) {
       print("hello");
       PdfFile file = _markedPdfFile.removeLast();

@@ -47,10 +47,10 @@ void movePdfBottomSheet(BuildContext context, String dirName) {
                         ),
                       ),
                       onTap: () {
-                        pdfManager.moveFile('Favorites');
-
-                        Navigator.pop(context);
-                        pdfManager.setMarkingState(!pdfManager.isMarking);
+                        pdfManager.moveFile('Favorites').then((value) {
+                          Navigator.pop(context);
+                          pdfManager.setMarkingState(!pdfManager.isMarking);
+                        });
                       },
                     ),
                   if (dirName != 'Office')
@@ -73,10 +73,10 @@ void movePdfBottomSheet(BuildContext context, String dirName) {
                         ),
                       ),
                       onTap: () {
-                        pdfManager.moveFile('Office');
-
-                        Navigator.pop(context);
-                        pdfManager.setMarkingState(!pdfManager.isMarking);
+                        pdfManager.moveFile('Office').then((value) {
+                          Navigator.pop(context);
+                          pdfManager.setMarkingState(!pdfManager.isMarking);
+                        });
                       },
                     ),
                   if (dirName != 'Save')
@@ -99,10 +99,10 @@ void movePdfBottomSheet(BuildContext context, String dirName) {
                         ),
                       ),
                       onTap: () {
-                        pdfManager.moveFile('Save');
-
-                        Navigator.pop(context);
-                        pdfManager.setMarkingState(!pdfManager.isMarking);
+                        pdfManager.moveFile('Save').then((value) {
+                          Navigator.pop(context);
+                          pdfManager.setMarkingState(!pdfManager.isMarking);
+                        });
                       },
                     ),
                   SizedBox(
