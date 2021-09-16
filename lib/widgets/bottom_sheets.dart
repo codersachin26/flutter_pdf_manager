@@ -47,7 +47,7 @@ void movePdfBottomSheet(BuildContext context, String dirName) {
                         ),
                       ),
                       onTap: () {
-                        pdfManager.moveFile('Favorites').then((value) {
+                        pdfManager.moveFile(dirName, 'Favorites').then((value) {
                           Navigator.pop(context);
                           pdfManager.setMarkingState(!pdfManager.isMarking);
                         });
@@ -73,7 +73,7 @@ void movePdfBottomSheet(BuildContext context, String dirName) {
                         ),
                       ),
                       onTap: () {
-                        pdfManager.moveFile('Office').then((value) {
+                        pdfManager.moveFile(dirName, 'Office').then((value) {
                           Navigator.pop(context);
                           pdfManager.setMarkingState(!pdfManager.isMarking);
                         });
@@ -99,7 +99,7 @@ void movePdfBottomSheet(BuildContext context, String dirName) {
                         ),
                       ),
                       onTap: () {
-                        pdfManager.moveFile('Save').then((value) {
+                        pdfManager.moveFile(dirName, 'Save').then((value) {
                           Navigator.pop(context);
                           pdfManager.setMarkingState(!pdfManager.isMarking);
                         });

@@ -48,7 +48,7 @@ class PdfList extends StatelessWidget {
       alignment: AlignmentDirectional.bottomEnd,
       children: [
         Container(
-          height: MediaQuery.of(context).size.height * .87,
+          height: MediaQuery.of(context).size.height * .89,
           child: FutureBuilder<List<PdfFile>>(
             future: pdfManager.getPdfs(dirName),
             builder: (context, AsyncSnapshot<List<PdfFile>> snapshot) {

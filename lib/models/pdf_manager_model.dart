@@ -23,6 +23,8 @@ class PdfManager extends ChangeNotifier {
 
   int get markedCount => _markedPdfFile.length;
 
+  PdfFile get getmarkedPdf => _markedPdfFile.first;
+
   // remove pdf file from disk
   Future<void> removeFiles(String listName) async {
     while (_markedPdfFile.isNotEmpty) {
@@ -38,23 +40,22 @@ class PdfManager extends ChangeNotifier {
   }
 
   // rename pdf file
-  void renamePdfFile(String newName, String listName) async {
+  Future<void> renamePdfFile(String newName, String listName) async {
     final pdfFile = File(_markedPdfFile.first.path);
+    final newFileName = newName + '.pdf';
     final newPath =
-        pdfFile.path.replaceFirst(_markedPdfFile.first.name, newName);
+        pdfFile.path.replaceFirst(_markedPdfFile.first.name, newFileName);
     await pdfFile.rename(newPath);
     PdfListDir listDir = _pdfListDirs[listName]!;
-    listDir.rename(_markedPdfFile.first, newName);
+    listDir.rename(_markedPdfFile.first, newFileName);
     _pdfListDirs[listName] = listDir;
-    _markedPdfFile.clear();
 
     notifyListeners();
   }
 
   // move pdf files to new path
-  Future<void> moveFile(String to) async {
+  Future<void> moveFile(String from, String to) async {
     while (_markedPdfFile.isNotEmpty) {
-      print("hello");
       PdfFile file = _markedPdfFile.removeLast();
       File sourceFile = File(file.path);
       try {
@@ -66,18 +67,18 @@ class PdfManager extends ChangeNotifier {
             '/storage/emulated/0/Pdf Manager/$to/${file.path.split('/').last}');
         await sourceFile.delete();
       }
-      final addList = to;
-      final removeList = file.path.split('/')[file.path.split('/').length - 2];
+      final addListName = to;
+      final removeListName = from;
 
       // remove from PdfList model
-      PdfListDir listDir = _pdfListDirs[removeList]!;
+      PdfListDir listDir = _pdfListDirs[removeListName]!;
       listDir.remove(file);
-      _pdfListDirs[removeList] = listDir;
+      _pdfListDirs[removeListName] = listDir;
 
       // add to PdfList model
-      listDir = _pdfListDirs[addList]!;
+      listDir = _pdfListDirs[addListName]!;
       listDir.add(file);
-      _pdfListDirs[addList] = listDir;
+      _pdfListDirs[addListName] = listDir;
     }
 
     notifyListeners();

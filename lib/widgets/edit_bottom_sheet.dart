@@ -47,7 +47,11 @@ class EditBottomSheet extends StatelessWidget {
               iconData: Icons.file_copy,
               name: "Rename",
               color: pdfManager.markedCount == 1 ? Colors.black : Colors.grey,
-              onTap: () {},
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => pdfRenameDailog(context, dirName));
+              },
             )
           ],
         ),
