@@ -71,17 +71,27 @@ class PdfManager extends ChangeNotifier {
       final removeListName = from;
 
       // remove from PdfList model
-      PdfListDir listDir = _pdfListDirs[removeListName]!;
-      listDir.remove(file);
-      _pdfListDirs[removeListName] = listDir;
+      removePdfFromList(removeListName, file);
 
       // add to PdfList model
-      listDir = _pdfListDirs[addListName]!;
-      listDir.add(file);
-      _pdfListDirs[addListName] = listDir;
+      addPdfToList(addListName, file);
     }
 
     notifyListeners();
+  }
+
+  // remove pdf file from list
+  void removePdfFromList(String listName, PdfFile file) {
+    final listDir = _pdfListDirs[listName]!;
+    listDir.remove(file);
+    _pdfListDirs[listName] = listDir;
+  }
+
+  // add pdf file to list
+  void addPdfToList(String listName, PdfFile file) {
+    final listDir = _pdfListDirs[listName]!;
+    listDir.add(file);
+    _pdfListDirs[listName] = listDir;
   }
 
   // return dir pdfs
