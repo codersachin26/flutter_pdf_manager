@@ -65,10 +65,10 @@ class _ImagesPreviewScreenState extends State<ImagesPreviewScreen> {
                           return Container(
                             width: MediaQuery.of(context).size.width,
                             margin: EdgeInsets.symmetric(horizontal: 5.0),
-                            decoration: BoxDecoration(color: Colors.amber),
+                            decoration: BoxDecoration(color: Colors.white),
                             child: Image.file(
                               File(img.path),
-                              fit: BoxFit.cover,
+                              fit: BoxFit.contain,
                             ),
                           );
                         },
@@ -87,13 +87,27 @@ class _ImagesPreviewScreenState extends State<ImagesPreviewScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextButton(onPressed: () {}, child: Text("Rotate")),
+                  TextButton(
+                      onPressed: () {
+                        widget.imgToPdfTool
+                            .changeOrientation(pageno - 1)
+                            .then((value) {
+                          setState(() {});
+                          print(widget.imgToPdfTool.getAllImg.length);
+                        });
+                      },
+                      child: Text("Rotate")),
                   SizedBox(
                     width: 10,
                   ),
                   TextButton(
                       onPressed: () {
-                        setState(() {});
+                        final pageindex = pageno - 1;
+                        widget.imgToPdfTool.remove(pageno - 1);
+                        setState(() {
+                          if (pageindex == widget.imgToPdfTool.getAllImg.length)
+                            pageno -= 1;
+                        });
                       },
                       child: Text("Remove")),
                 ],

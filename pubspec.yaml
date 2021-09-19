@@ -33,6 +33,7 @@ dependencies:
   carousel_slider: ^4.0.0
   image_picker: ^0.8.4
   pdf: ^3.6.0
+  syncfusion_flutter_pdf: ^19.2.62-beta
 
 dev_dependencies:
   flutter_test:
