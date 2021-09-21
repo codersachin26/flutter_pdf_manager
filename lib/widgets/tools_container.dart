@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pdf_manager/pdf_tools/encrypt_pdf/screens/pdf_encryption_screen.dart';
 import 'package:pdf_manager/pdf_tools/img_to_pdf/models/img_to_pdf_model.dart';
 import 'package:pdf_manager/pdf_tools/img_to_pdf/screens/images_preview_screen.dart';
 import 'package:pdf_manager/widgets/tool_card_container.dart';
@@ -42,7 +43,12 @@ class ToolsContainer extends StatelessWidget {
                   iconData: Icons.enhanced_encryption_rounded,
                   name: "encrypt",
                   iconColor: Colors.red,
-                  onTap: () {}),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PdfEncryptionScreen()));
+                  }),
               ToolCardContainer(
                   iconData: Icons.compress_rounded,
                   name: "compress",
