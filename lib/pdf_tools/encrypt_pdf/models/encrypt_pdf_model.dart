@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:pdf_manager/models/pdf_file_model.dart';
+import 'package:pdf_manager/utils/get_file_size.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class PdfEncryptTool {
@@ -12,7 +13,7 @@ class PdfEncryptTool {
     _file = file;
   }
 
-  void encryptIt(String password) async {
+  Future<void> encryptIt(String password) async {
     final path = '/storage/emulated/0/Pdf Manager/Save/secured_' + _file.name;
     File memoryFile = File(_file.path);
     PdfDocument pdf = PdfDocument(inputBytes: memoryFile.readAsBytesSync());
@@ -21,6 +22,10 @@ class PdfEncryptTool {
     List<int> bytes = pdf.save();
     pdf.dispose();
     final encryptPdf = File(path);
-    await encryptPdf.writeAsBytes(bytes, flush: true);
+    await encryptPdf.writeAsBytes(bytes, flush: true).then((value) {
+      final PdfFile securedFile =
+          PdfFile('secured_${_file.name}', getFileSize(path), path);
+      _file = securedFile;
+    });
   }
 }

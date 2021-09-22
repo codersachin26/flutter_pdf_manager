@@ -70,7 +70,7 @@ class _PdfCompressorScreenState extends State<PdfCompressorScreen> {
                   ),
                 ),
                 if (isFilePicked)
-                  EnterPasswordContainer(
+                  CompressorContainer(
                       pdfCompressorTool: pdfCompressorTool,
                       setPdfCompressorState: setPdfCompressorState)
               ],
@@ -82,21 +82,21 @@ class _PdfCompressorScreenState extends State<PdfCompressorScreen> {
   }
 }
 
-class EnterPasswordContainer extends StatefulWidget {
+class CompressorContainer extends StatefulWidget {
   final PdfCompressorTool pdfCompressorTool;
   final VoidCallback setPdfCompressorState;
 
-  EnterPasswordContainer(
+  CompressorContainer(
       {Key? key,
       required this.pdfCompressorTool,
       required this.setPdfCompressorState})
       : super(key: key);
 
   @override
-  _EnterPasswordContainerState createState() => _EnterPasswordContainerState();
+  _CompressorContainerState createState() => _CompressorContainerState();
 }
 
-class _EnterPasswordContainerState extends State<EnterPasswordContainer> {
+class _CompressorContainerState extends State<CompressorContainer> {
   CompressQuality _quality = CompressQuality.MEDIUM;
   @override
   Widget build(BuildContext context) {

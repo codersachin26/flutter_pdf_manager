@@ -1,9 +1,11 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf_manager/models/pdf_file_model.dart';
+import 'package:pdf_manager/models/pdf_manager_model.dart';
 import 'package:pdf_manager/pdf_tools/encrypt_pdf/models/encrypt_pdf_model.dart';
 import 'package:pdf_manager/utils/get_file_size.dart';
 import 'package:pdf_manager/widgets/pdf_file_tile.dart';
+import 'package:provider/provider.dart';
 
 class PdfEncryptionScreen extends StatefulWidget {
   @override
@@ -143,7 +145,12 @@ class _EnterPasswordContainerState extends State<EnterPasswordContainer> {
               child: Text(" encrypt ", style: TextStyle(color: Colors.red)),
               onPressed: () {
                 if (passwrd2 == passwrd1) {
-                  widget.pdfEncryptTool.encryptIt(passwrd1);
+                  widget.pdfEncryptTool.encryptIt(passwrd1).then((value) {
+                    final pdfManager =
+                        Provider.of<PdfManager>(context, listen: false);
+                    pdfManager.addPdfToList(
+                        'Save', widget.pdfEncryptTool.getPdfFile);
+                  });
                   widget.setPdfEncryptionState();
                 } else {
                   setState(() {

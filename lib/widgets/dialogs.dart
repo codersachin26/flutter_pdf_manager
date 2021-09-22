@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:pdf_manager/models/pdf_file_model.dart';
 import 'package:pdf_manager/models/pdf_manager_model.dart';
 import 'package:pdf_manager/pdf_tools/img_to_pdf/models/img_to_pdf_model.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 // delete action dialog
 AlertDialog deleteAlertDialog(BuildContext context, listName) {
@@ -210,4 +214,99 @@ Dialog pdfNameDialog(BuildContext context, ImgToPdf imgToPdfTool) {
       ),
     ),
   );
+}
+
+// pdf password protected dialog
+class PasswordProtectedDialog extends StatefulWidget {
+  final PdfFile pdf;
+  final Function(BuildContext) onCancel;
+  final Function(String) onSuccess;
+  const PasswordProtectedDialog(
+      {Key? key,
+      required this.pdf,
+      required this.onCancel,
+      required this.onSuccess})
+      : super(key: key);
+
+  @override
+  _PasswordProtectedDialogState createState() =>
+      _PasswordProtectedDialogState();
+}
+
+class _PasswordProtectedDialogState extends State<PasswordProtectedDialog> {
+  String? wrongPassword;
+  String enterPassword = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Container(
+        height: MediaQuery.of(context).size.height * .30,
+        child: Column(
+          children: [
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              "this file is protected",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                onTap: () {
+                  setState(() {
+                    wrongPassword = null;
+                  });
+                },
+                autofocus: true,
+                onChanged: (value) {
+                  enterPassword = value;
+                },
+                decoration: InputDecoration(
+                    hintText: 'password', errorText: wrongPassword),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      widget.onCancel(context);
+                    },
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(color: Colors.black),
+                    )),
+                TextButton(
+                    onPressed: () {
+                      try {
+                        File memoryFile = File(widget.pdf.path);
+                        PdfDocument(
+                            password: enterPassword,
+                            inputBytes: memoryFile.readAsBytesSync());
+                        Navigator.pop(context);
+                        widget.onSuccess(enterPassword);
+                      } catch (e) {
+                        setState(() {
+                          wrongPassword = 'incorrect password';
+                        });
+                      }
+                    },
+                    child: Text(
+                      'Open',
+                      style: TextStyle(color: Colors.black),
+                    )),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }
