@@ -23,8 +23,8 @@ class PdfEncryptTool {
     pdf.dispose();
     final encryptPdf = File(path);
     await encryptPdf.writeAsBytes(bytes, flush: true).then((value) {
-      final PdfFile securedFile =
-          PdfFile('secured_${_file.name}', getFileSize(path), path);
+      final fileName = 'secured_${_file.name}';
+      final PdfFile securedFile = PdfFile(fileName, getFileSize(path), path);
       _file = securedFile;
     });
   }

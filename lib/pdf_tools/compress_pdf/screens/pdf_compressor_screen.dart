@@ -29,7 +29,7 @@ class _PdfCompressorScreenState extends State<PdfCompressorScreen> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.red,
-          title: Text("Pdf Encryption"),
+          title: Text("Pdf Compressor"),
         ),
         body: SingleChildScrollView(
           child: Container(

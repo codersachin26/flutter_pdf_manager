@@ -150,8 +150,8 @@ class _EnterPasswordContainerState extends State<EnterPasswordContainer> {
                         Provider.of<PdfManager>(context, listen: false);
                     pdfManager.addPdfToList(
                         'Save', widget.pdfEncryptTool.getPdfFile);
+                    widget.setPdfEncryptionState();
                   });
-                  widget.setPdfEncryptionState();
                 } else {
                   setState(() {
                     passwrdError = "password didn't matched";
