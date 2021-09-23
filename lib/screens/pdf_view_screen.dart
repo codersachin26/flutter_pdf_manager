@@ -7,6 +7,7 @@ import 'package:pdf_manager/models/pdf_file_model.dart';
 import 'package:pdf_manager/widgets/dialogs.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:after_layout/after_layout.dart';
+import 'package:share_plus/share_plus.dart';
 
 class PdfViewScreen extends StatelessWidget {
   final PdfFile pdf;
@@ -24,7 +25,11 @@ class PdfViewScreen extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.share),
-            onPressed: () {},
+            onPressed: () {
+              Share.shareFiles(
+                [pdf.path],
+              );
+            },
           ),
         ],
       ),

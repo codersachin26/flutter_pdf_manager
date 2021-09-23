@@ -37,6 +37,7 @@ dependencies:
   file_picker: ^4.0.3
   pdf_compressor: ^0.2.0
   after_layout: ^1.1.0
+  share_plus: ^2.1.4
 
 dev_dependencies:
   flutter_test:
