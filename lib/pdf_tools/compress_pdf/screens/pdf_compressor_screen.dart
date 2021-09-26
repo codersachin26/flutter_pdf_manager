@@ -5,6 +5,7 @@ import 'package:pdf_manager/models/pdf_file_model.dart';
 import 'package:pdf_manager/models/pdf_manager_model.dart';
 import 'package:pdf_manager/pdf_tools/compress_pdf/models/pdf_compressor.dart';
 import 'package:pdf_manager/utils/get_file_size.dart';
+import 'package:pdf_manager/widgets/custom_btn.dart';
 import 'package:pdf_manager/widgets/pdf_file_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -17,10 +18,24 @@ class _PdfCompressorScreenState extends State<PdfCompressorScreen> {
   final PdfCompressorTool pdfCompressorTool = PdfCompressorTool();
   bool isFilePicked = false;
 
-  void setPdfCompressorState() {
+  void resetPdfCompressorState() {
     setState(() {
       isFilePicked = false;
     });
+  }
+
+  void onTap() async {
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
+    if (result != null) {
+      final file = result.files.first;
+
+      pdfCompressorTool
+          .addPdf(PdfFile(file.name, getFileSize(file.path!), file.path!));
+      setState(() {
+        isFilePicked = true;
+      });
+    }
   }
 
   @override
@@ -37,42 +52,13 @@ class _PdfCompressorScreenState extends State<PdfCompressorScreen> {
               children: [
                 Container(
                   alignment: Alignment.center,
-                  padding: EdgeInsets.only(top: 10),
-                  child: TextButton(
-                    onPressed: () async {
-                      FilePickerResult? result = await FilePicker.platform
-                          .pickFiles(
-                              type: FileType.custom,
-                              allowedExtensions: ['pdf']);
-                      if (result != null) {
-                        final file = result.files.first;
-
-                        pdfCompressorTool.addPdf(PdfFile(
-                            file.name, getFileSize(file.path!), file.path!));
-                        setState(() {
-                          isFilePicked = true;
-                        });
-                      }
-                    },
-                    child: Text(
-                      " Choose Pdf ",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
-                        side: MaterialStateProperty.all<BorderSide>(
-                            BorderSide(color: Colors.red.shade400))),
-                  ),
+                  padding: EdgeInsets.only(top: 14),
+                  child: CustomBtn(text: 'Choose Pdf', onTap: onTap),
                 ),
                 if (isFilePicked)
                   CompressorContainer(
                       pdfCompressorTool: pdfCompressorTool,
-                      setPdfCompressorState: setPdfCompressorState)
+                      setPdfCompressorState: resetPdfCompressorState)
               ],
             ),
           ),
@@ -82,6 +68,7 @@ class _PdfCompressorScreenState extends State<PdfCompressorScreen> {
   }
 }
 
+// pdf compressor container
 class CompressorContainer extends StatefulWidget {
   final PdfCompressorTool pdfCompressorTool;
   final VoidCallback setPdfCompressorState;
@@ -98,6 +85,33 @@ class CompressorContainer extends StatefulWidget {
 
 class _CompressorContainerState extends State<CompressorContainer> {
   CompressQuality _quality = CompressQuality.MEDIUM;
+
+  void onTap() {
+    widget.pdfCompressorTool.compressor(_quality).then((value) {
+      if (value.isEmpty) {
+        final pdfManager = Provider.of<PdfManager>(context, listen: false);
+        pdfManager.addPdfToList('Save', widget.pdfCompressorTool.getPdfFile);
+        widget.setPdfCompressorState();
+      } else {
+        ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
+          leading: Icon(Icons.info),
+          content: Text(value),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                },
+                child: Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                ))
+          ],
+          backgroundColor: Colors.white,
+        ));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -167,28 +181,9 @@ class _CompressorContainerState extends State<CompressorContainer> {
           ),
           Align(
             alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () {
-                widget.pdfCompressorTool.compressor(_quality).then((value) {
-                  final pdfManager =
-                      Provider.of<PdfManager>(context, listen: false);
-                  pdfManager.addPdfToList(
-                      'Save', widget.pdfCompressorTool.getPdfFile);
-                  widget.setPdfCompressorState();
-                });
-              },
-              child: Text(
-                " Compress ",
-                style: TextStyle(color: Colors.red),
-              ),
-              style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20))),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                  side: MaterialStateProperty.all<BorderSide>(
-                      BorderSide(color: Colors.red.shade400))),
+            child: CustomBtn(
+              text: 'Compress',
+              onTap: onTap,
             ),
           )
         ],

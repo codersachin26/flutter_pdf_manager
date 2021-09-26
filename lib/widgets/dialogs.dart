@@ -10,6 +10,7 @@ import 'package:syncfusion_flutter_pdf/pdf.dart';
 // delete action dialog
 AlertDialog deleteAlertDialog(BuildContext context, listName) {
   return AlertDialog(
+    insetPadding: EdgeInsets.symmetric(horizontal: 20),
     content: Text("Are you sure you want to delete these files?"),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     actions: [
@@ -44,11 +45,17 @@ AlertDialog deleteAlertDialog(BuildContext context, listName) {
 // rename dialog
 Dialog pdfRenameDailog(BuildContext context, String listName) {
   TextEditingController controller = TextEditingController();
-  controller.text = Provider.of<PdfManager>(context, listen: false)
+  final filename = Provider.of<PdfManager>(context, listen: false)
       .getmarkedPdf
       .name
       .replaceAll('.pdf', "");
+  controller.text = filename;
+  controller.selection = TextSelection(
+    baseOffset: 0,
+    extentOffset: filename.length,
+  );
   return Dialog(
+    insetPadding: EdgeInsets.symmetric(horizontal: 20),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     child: Container(
       padding: EdgeInsets.all(10),
@@ -72,7 +79,7 @@ Dialog pdfRenameDailog(BuildContext context, String listName) {
           SizedBox(
             height: 22,
           ),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: [
             TextButton(
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -93,6 +100,9 @@ Dialog pdfRenameDailog(BuildContext context, String listName) {
                         color: Colors.red, fontWeight: FontWeight.bold),
                   ),
                 )),
+            SizedBox(
+              width: 10,
+            ),
             TextButton(
               style: ButtonStyle(
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -131,6 +141,7 @@ Dialog pdfRenameDailog(BuildContext context, String listName) {
 Dialog pdfNameDialog(BuildContext context, ImgToPdf imgToPdfTool) {
   TextEditingController controller = TextEditingController();
   return Dialog(
+    insetPadding: EdgeInsets.symmetric(horizontal: 20),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     child: Container(
       padding: EdgeInsets.all(10),
@@ -240,6 +251,7 @@ class _PasswordProtectedDialogState extends State<PasswordProtectedDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      insetPadding: EdgeInsets.symmetric(horizontal: 20),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Container(
         height: MediaQuery.of(context).size.height * .30,

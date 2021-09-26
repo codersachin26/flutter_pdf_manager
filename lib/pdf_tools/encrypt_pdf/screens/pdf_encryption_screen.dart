@@ -4,6 +4,7 @@ import 'package:pdf_manager/models/pdf_file_model.dart';
 import 'package:pdf_manager/models/pdf_manager_model.dart';
 import 'package:pdf_manager/pdf_tools/encrypt_pdf/models/encrypt_pdf_model.dart';
 import 'package:pdf_manager/utils/get_file_size.dart';
+import 'package:pdf_manager/widgets/custom_btn.dart';
 import 'package:pdf_manager/widgets/pdf_file_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -16,10 +17,27 @@ class _PdfEncryptionScreenState extends State<PdfEncryptionScreen> {
   final PdfEncryptTool pdfEncryptTool = PdfEncryptTool();
   bool isFilePicked = false;
 
-  void setPdfEncryptionState() {
+  void resetPdfEncryptionState() {
     setState(() {
       isFilePicked = false;
     });
+  }
+
+  void onTap() async {
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
+    if (result != null) {
+      final file = result.files.first;
+
+      pdfEncryptTool
+          .addPdf(PdfFile(file.name, getFileSize(file.path!), file.path!));
+      setState(() {
+        isFilePicked = true;
+      });
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Pdf file did not pick')));
+    }
   }
 
   @override
@@ -36,42 +54,16 @@ class _PdfEncryptionScreenState extends State<PdfEncryptionScreen> {
               children: [
                 Container(
                   alignment: Alignment.center,
-                  padding: EdgeInsets.only(top: 10),
-                  child: TextButton(
-                    onPressed: () async {
-                      FilePickerResult? result = await FilePicker.platform
-                          .pickFiles(
-                              type: FileType.custom,
-                              allowedExtensions: ['pdf']);
-                      if (result != null) {
-                        final file = result.files.first;
-
-                        pdfEncryptTool.addPdf(PdfFile(
-                            file.name, getFileSize(file.path!), file.path!));
-                        setState(() {
-                          isFilePicked = true;
-                        });
-                      }
-                    },
-                    child: Text(
-                      " Choose Pdf ",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
-                        side: MaterialStateProperty.all<BorderSide>(
-                            BorderSide(color: Colors.red.shade400))),
+                  padding: EdgeInsets.only(top: 14),
+                  child: CustomBtn(
+                    text: 'Choose Pdf',
+                    onTap: onTap,
                   ),
                 ),
                 if (isFilePicked)
-                  EnterPasswordContainer(
+                  SetPasswordContainer(
                       pdfEncryptTool: pdfEncryptTool,
-                      setPdfEncryptionState: setPdfEncryptionState)
+                      setPdfEncryptionState: resetPdfEncryptionState)
               ],
             ),
           ),
@@ -81,29 +73,61 @@ class _PdfEncryptionScreenState extends State<PdfEncryptionScreen> {
   }
 }
 
-class EnterPasswordContainer extends StatefulWidget {
+// set pdf password
+class SetPasswordContainer extends StatefulWidget {
   final PdfEncryptTool pdfEncryptTool;
   final VoidCallback setPdfEncryptionState;
 
-  EnterPasswordContainer(
+  SetPasswordContainer(
       {Key? key,
       required this.pdfEncryptTool,
       required this.setPdfEncryptionState})
       : super(key: key);
 
   @override
-  _EnterPasswordContainerState createState() => _EnterPasswordContainerState();
+  _SetPasswordContainerState createState() => _SetPasswordContainerState();
 }
 
-class _EnterPasswordContainerState extends State<EnterPasswordContainer> {
+class _SetPasswordContainerState extends State<SetPasswordContainer> {
   String? passwrdError;
   String passwrd1 = '';
   String passwrd2 = '';
 
+  void onTap() {
+    if (passwrd2 == passwrd1) {
+      widget.pdfEncryptTool.encryptIt(passwrd1).then((value) {
+        if (value.isEmpty) {
+          final pdfManager = Provider.of<PdfManager>(context, listen: false);
+          pdfManager.addPdfToList('Save', widget.pdfEncryptTool.getPdfFile);
+          widget.setPdfEncryptionState();
+        } else {
+          ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
+            content: Text(value),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                  },
+                  child: Icon(
+                    Icons.cancel,
+                    color: Colors.red,
+                  ))
+            ],
+            backgroundColor: Colors.white,
+          ));
+        }
+      });
+    } else {
+      setState(() {
+        passwrdError = "password didn't matched";
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * .97,
+      width: MediaQuery.of(context).size.width * .96,
       child: Column(
         children: [
           SizedBox(
@@ -140,35 +164,13 @@ class _EnterPasswordContainerState extends State<EnterPasswordContainer> {
             },
           ),
           SizedBox(
-            height: 10,
+            height: 14,
           ),
           Align(
             alignment: Alignment.centerRight,
-            child: TextButton(
-              child: Text(" encrypt ", style: TextStyle(color: Colors.red)),
-              onPressed: () {
-                if (passwrd2 == passwrd1) {
-                  widget.pdfEncryptTool.encryptIt(passwrd1).then((value) {
-                    final pdfManager =
-                        Provider.of<PdfManager>(context, listen: false);
-                    pdfManager.addPdfToList(
-                        'Save', widget.pdfEncryptTool.getPdfFile);
-                    widget.setPdfEncryptionState();
-                  });
-                } else {
-                  setState(() {
-                    passwrdError = "password didn't matched";
-                  });
-                }
-              },
-              style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20))),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                  side: MaterialStateProperty.all<BorderSide>(
-                      BorderSide(color: Colors.red.shade400))),
+            child: CustomBtn(
+              text: 'encrypt',
+              onTap: onTap,
             ),
           )
         ],

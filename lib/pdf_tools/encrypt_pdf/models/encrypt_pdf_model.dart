@@ -13,10 +13,16 @@ class PdfEncryptTool {
     _file = file;
   }
 
-  Future<void> encryptIt(String password) async {
+  Future<String> encryptIt(String password) async {
     final path = '/storage/emulated/0/Pdf Manager/Save/secured_' + _file.name;
     File memoryFile = File(_file.path);
-    PdfDocument pdf = PdfDocument(inputBytes: memoryFile.readAsBytesSync());
+    PdfDocument pdf;
+    try {
+      pdf = PdfDocument(inputBytes: memoryFile.readAsBytesSync());
+    } catch (e) {
+      return 'this file is protected';
+    }
+
     pdf.security.ownerPassword = password;
     pdf.security.userPassword = password;
     List<int> bytes = pdf.save();
@@ -27,5 +33,6 @@ class PdfEncryptTool {
       final PdfFile securedFile = PdfFile(fileName, getFileSize(path), path);
       _file = securedFile;
     });
+    return '';
   }
 }
