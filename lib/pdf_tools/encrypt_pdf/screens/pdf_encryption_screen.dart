@@ -109,7 +109,10 @@ class _EnterPasswordContainerState extends State<EnterPasswordContainer> {
           SizedBox(
             height: 10,
           ),
-          PdfTile(pdfFile: widget.pdfEncryptTool.getPdfFile),
+          PdfTile(
+            pdfFile: widget.pdfEncryptTool.getPdfFile,
+            isLastElement: false,
+          ),
           SizedBox(
             height: 10,
           ),

@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pdf_manager/models/pdf_file_model.dart';
 import 'package:pdf_manager/models/pdf_manager_model.dart';
 import 'package:pdf_manager/screens/pdf_view_screen.dart';
 import 'package:provider/provider.dart';
 
-class PdfTile extends StatefulWidget {
+class PdfTile extends StatelessWidget {
   final PdfFile pdfFile;
+  final bool isLastElement;
 
-  PdfTile({Key? key, required this.pdfFile}) : super(key: key);
-
-  @override
-  _PdfTileState createState() => _PdfTileState();
-}
-
-class _PdfTileState extends State<PdfTile> {
+  PdfTile({Key? key, required this.pdfFile, required this.isLastElement})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     final pdfManager = Provider.of<PdfManager>(context, listen: false);
 
     return InkWell(
       child: Container(
+        margin: isLastElement
+            ? EdgeInsets.only(bottom: 30)
+            : EdgeInsets.only(bottom: 0),
         height: MediaQuery.of(context).size.height * .11,
         width: MediaQuery.of(context).size.width * .97,
         decoration: tileDecoration(),
@@ -28,7 +28,7 @@ class _PdfTileState extends State<PdfTile> {
             Container(
               width: MediaQuery.of(context).size.width * .17,
               child: Icon(
-                Icons.picture_as_pdf_rounded,
+                FontAwesomeIcons.filePdf,
                 size: 55,
                 color: Colors.red,
               ),
@@ -40,18 +40,18 @@ class _PdfTileState extends State<PdfTile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      widget.pdfFile.name,
+                      pdfFile.name,
                       style: TextStyle(fontSize: 15),
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Text(widget.pdfFile.size,
+                    Text(pdfFile.size,
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.w100))
                   ]),
             ),
             pdfManager.isMarking
                 ? DoneIcon(
-                    color: pdfManager.isMarked(widget.pdfFile.name)
+                    color: pdfManager.isMarked(pdfFile.name)
                         ? Colors.deepPurple
                         : Colors.grey,
                   )
@@ -64,12 +64,12 @@ class _PdfTileState extends State<PdfTile> {
       onTap: () {
         if (pdfManager.isMarking) {
           final pdfManager = Provider.of<PdfManager>(context, listen: false);
-          pdfManager.marked(widget.pdfFile);
+          pdfManager.marked(pdfFile);
         } else {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => PdfViewScreen(pdf: widget.pdfFile)));
+                  builder: (context) => PdfViewScreen(pdf: pdfFile)));
         }
       },
     );

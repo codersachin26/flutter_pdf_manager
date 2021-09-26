@@ -107,7 +107,10 @@ class _CompressorContainerState extends State<CompressorContainer> {
           SizedBox(
             height: 10,
           ),
-          PdfTile(pdfFile: widget.pdfCompressorTool.getPdfFile),
+          PdfTile(
+            pdfFile: widget.pdfCompressorTool.getPdfFile,
+            isLastElement: false,
+          ),
           ListTile(
             onTap: () {
               setState(() {

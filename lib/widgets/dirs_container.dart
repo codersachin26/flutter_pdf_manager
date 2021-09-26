@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pdf_manager/widgets/card_container.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // dir cards container
 class DirsContainer extends StatelessWidget {
@@ -17,7 +18,7 @@ class DirsContainer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 CardContainer(
-                    iconData: Icons.picture_as_pdf_rounded,
+                    iconData: FontAwesomeIcons.filePdf,
                     name: "All Pdf",
                     iconColor: Colors.red,
                     dirPath: '/storage/emulated/0'),
@@ -27,7 +28,7 @@ class DirsContainer extends StatelessWidget {
                     iconColor: Colors.green,
                     dirPath: '/storage/emulated/0/Download'),
                 CardContainer(
-                    iconData: Icons.document_scanner_rounded,
+                    iconData: FontAwesomeIcons.telegram,
                     name: "Telegram",
                     iconColor: Colors.lightBlue,
                     dirPath: '/storage/emulated/0/Telegram/Telegram Documents')
@@ -37,9 +38,9 @@ class DirsContainer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 CardContainer(
-                    iconData: Icons.phone_iphone,
+                    iconData: FontAwesomeIcons.whatsapp,
                     name: "WhatsApp",
-                    iconColor: Colors.red,
+                    iconColor: Colors.green.shade500,
                     dirPath:
                         '/storage/emulated/0/WhatsApp/Media/WhatsApp Documents'),
                 CardContainer(
@@ -48,9 +49,9 @@ class DirsContainer extends StatelessWidget {
                     iconColor: Colors.pink,
                     dirPath: '/storage/emulated/0/Pdf Manager/Save'),
                 CardContainer(
-                    iconData: Icons.favorite_border_rounded,
+                    iconData: Icons.favorite_rounded,
                     name: "Favorites",
-                    iconColor: Colors.red[900],
+                    iconColor: Colors.red,
                     dirPath: '/storage/emulated/0/Pdf Manager/Favorites')
               ],
             ),
