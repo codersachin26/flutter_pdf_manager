@@ -14,31 +14,41 @@ class PdfListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pdfManager = Provider.of<PdfManager>(context, listen: false);
-    return SafeArea(
-      child: Scaffold(
-          appBar: AppBar(
-            title: Text(name),
-            backgroundColor: Colors.red,
-            actions: [
-              IconButton(onPressed: () {
-                pdfManager.setMarkingState(!pdfManager.isMarking);
-              }, icon: Consumer<PdfManager>(builder: (context, pdfManager, _) {
-                if (!pdfManager.isMarking)
-                  return Icon(
-                    Icons.mode_edit_outline_rounded,
-                    color: Colors.white,
-                    size: 28,
-                  );
-                else
-                  return Icon(
-                    Icons.cancel,
-                    color: Colors.white,
-                    size: 28,
-                  );
-              }))
-            ],
-          ),
-          body: PdfList(dirName: name)),
+    return WillPopScope(
+      onWillPop: () async {
+        if (pdfManager.isMarking) {
+          pdfManager.setMarkingState(false);
+          return false;
+        } else
+          return true;
+      },
+      child: SafeArea(
+        child: Scaffold(
+            appBar: AppBar(
+              title: Text(name),
+              backgroundColor: Colors.red,
+              actions: [
+                IconButton(onPressed: () {
+                  pdfManager.setMarkingState(!pdfManager.isMarking);
+                }, icon:
+                    Consumer<PdfManager>(builder: (context, pdfManager, _) {
+                  if (!pdfManager.isMarking)
+                    return Icon(
+                      Icons.mode_edit_outline_rounded,
+                      color: Colors.white,
+                      size: 28,
+                    );
+                  else
+                    return Icon(
+                      Icons.cancel,
+                      color: Colors.white,
+                      size: 28,
+                    );
+                }))
+              ],
+            ),
+            body: PdfList(dirName: name)),
+      ),
     );
   }
 }
