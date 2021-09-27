@@ -42,99 +42,110 @@ AlertDialog deleteAlertDialog(BuildContext context, listName) {
   );
 }
 
-// rename dialog
-Dialog pdfRenameDailog(BuildContext context, String listName) {
-  TextEditingController controller = TextEditingController();
-  final filename = Provider.of<PdfManager>(context, listen: false)
-      .getmarkedPdf
-      .name
-      .replaceAll('.pdf', "");
-  controller.text = filename;
-  controller.selection = TextSelection(
-    baseOffset: 0,
-    extentOffset: filename.length,
-  );
-  return Dialog(
-    insetPadding: EdgeInsets.symmetric(horizontal: 20),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    child: Container(
-      padding: EdgeInsets.all(10),
-      height: MediaQuery.of(context).size.height * .23,
-      child: Column(
-        children: [
-          TextField(
-            controller: controller,
-            autofocus: true,
-            autocorrect: false,
-            cursorColor: Colors.red.shade300,
-            decoration: InputDecoration(
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.red.shade200),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.red.shade200),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 22,
-          ),
-          Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-            TextButton(
-                style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20))),
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
-                    side: MaterialStateProperty.all<BorderSide>(
-                        BorderSide(color: Colors.red))),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 2, 8, 2),
-                  child: Text(
-                    "Cancel",
-                    style: TextStyle(
-                        color: Colors.red, fontWeight: FontWeight.bold),
-                  ),
-                )),
-            SizedBox(
-              width: 10,
-            ),
-            TextButton(
-              style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20))),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                  side: MaterialStateProperty.all<BorderSide>(
-                      BorderSide(color: Colors.lightGreen.shade400))),
-              onPressed: () {
-                final pdfManager =
-                    Provider.of<PdfManager>(context, listen: false);
-                final inputText = controller.text;
-                pdfManager.renamePdfFile(inputText, listName).then((value) {
-                  pdfManager.setMarkingState(false);
+// pdf rename statefulwidget dialog box
+class PdfRenameDialog extends StatefulWidget {
+  final listName;
+  const PdfRenameDialog({Key? key, required this.listName}) : super(key: key);
+
+  @override
+  _PdfRenameDialogState createState() => _PdfRenameDialogState();
+}
+
+class _PdfRenameDialogState extends State<PdfRenameDialog> {
+  String? errorText;
+  late TextEditingController controller;
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController();
+    final filename = Provider.of<PdfManager>(context, listen: false)
+        .getmarkedPdf
+        .name
+        .replaceAll('.pdf', "");
+    controller.text = filename;
+    controller.selection =
+        TextSelection(baseOffset: 0, extentOffset: filename.length);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      insetPadding: EdgeInsets.symmetric(horizontal: 20),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Container(
+        padding: EdgeInsets.all(10),
+        height: MediaQuery.of(context).size.height * .26,
+        child: Column(
+          children: [
+            TextField(
+              controller: controller,
+              autofocus: true,
+              autocorrect: false,
+              cursorColor: Colors.red.shade300,
+              onChanged: (text) {
+                setState(() {
+                  errorText = null;
                 });
-                Navigator.pop(context);
               },
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 2, 8, 2),
-                child: Text(
-                  "Done",
-                  style: TextStyle(
-                      color: Colors.green, fontWeight: FontWeight.bold),
+              decoration: InputDecoration(
+                errorText: errorText,
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red.shade200),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red.shade200),
                 ),
               ),
             ),
-          ])
-        ],
+            SizedBox(
+              height: 22,
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 2, 6, 2),
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(
+                          color: Colors.red, fontWeight: FontWeight.bold),
+                    ),
+                  )),
+              TextButton(
+                onPressed: () {
+                  final pdfManager =
+                      Provider.of<PdfManager>(context, listen: false);
+                  final inputText = controller.text;
+                  pdfManager
+                      .renamePdfFile(inputText, widget.listName)
+                      .then((value) {
+                    if (value != null)
+                      setState(() {
+                        errorText = value;
+                      });
+                    else {
+                      pdfManager.setMarkingState(false);
+                      Navigator.pop(context);
+                    }
+                  });
+                },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(6, 2, 8, 2),
+                  child: Text(
+                    "Rename",
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ])
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 // new pdf name dialog

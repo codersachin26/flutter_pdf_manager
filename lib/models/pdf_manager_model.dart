@@ -40,17 +40,23 @@ class PdfManager extends ChangeNotifier {
   }
 
   // rename pdf file
-  Future<void> renamePdfFile(String newName, String listName) async {
+  Future<String?> renamePdfFile(String newName, String listName) async {
     final pdfFile = File(_markedPdfFile.first.path);
     final newFileName = newName + '.pdf';
     final newPath =
         pdfFile.path.replaceFirst(_markedPdfFile.first.name, newFileName);
-    await pdfFile.rename(newPath);
-    PdfListDir listDir = _pdfListDirs[listName]!;
-    listDir.rename(_markedPdfFile.first, newFileName);
-    _pdfListDirs[listName] = listDir;
+    print(File(newPath).existsSync());
+    if (File(newPath).existsSync() &&
+        newFileName != _markedPdfFile.first.name) {
+      return 'file already exists';
+    } else {
+      await pdfFile.rename(newPath);
+      PdfListDir listDir = _pdfListDirs[listName]!;
+      listDir.rename(_markedPdfFile.first, newFileName);
+      _pdfListDirs[listName] = listDir;
 
-    notifyListeners();
+      notifyListeners();
+    }
   }
 
   // move pdf files to new path

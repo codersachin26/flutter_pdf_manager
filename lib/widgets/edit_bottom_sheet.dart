@@ -50,7 +50,7 @@ class EditBottomSheet extends StatelessWidget {
               onTap: () {
                 showDialog(
                     context: context,
-                    builder: (context) => pdfRenameDailog(context, dirName));
+                    builder: (context) => PdfRenameDialog(listName: dirName));
               },
             )
           ],
