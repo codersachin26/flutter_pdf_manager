@@ -20,7 +20,7 @@ class PdfEncryptTool {
     try {
       pdf = PdfDocument(inputBytes: memoryFile.readAsBytesSync());
     } catch (e) {
-      return 'this file is protected';
+      return 'this file is password protected';
     }
 
     pdf.security.ownerPassword = password;

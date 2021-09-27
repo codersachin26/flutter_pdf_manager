@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf_manager/models/pdf_file_model.dart';
@@ -115,6 +117,9 @@ class _SetPasswordContainerState extends State<SetPasswordContainer> {
             ],
             backgroundColor: Colors.white,
           ));
+          Timer(Duration(seconds: 5), () {
+            ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+          });
         }
       });
     } else {
