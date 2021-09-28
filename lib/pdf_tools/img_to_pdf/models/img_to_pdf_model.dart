@@ -1,18 +1,18 @@
 import 'dart:io';
+import 'dart:isolate';
+import 'dart:typed_data';
 
-import 'package:image_picker/image_picker.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:image/image.dart' as img;
 import 'package:pdf_manager/models/pdf_file_model.dart';
 import 'package:pdf_manager/utils/get_file_size.dart';
 
 class ImgToPdf {
-  final List<XFile> _images;
-  int rotationAngle = 90;
+  final List<Uint8List> _images;
 
   ImgToPdf(this._images);
 
-  List<XFile> get getAllImg => this._images;
+  List<Uint8List> get getAllImg => this._images;
 
   void remove(int index) {
     this._images.removeAt(index);
@@ -20,9 +20,11 @@ class ImgToPdf {
 
   Future<PdfFile> convertToPdf(String name) async {
     final pdfFileName = name + '.pdf';
+
     final pdf = pw.Document();
-    for (var img in _images) {
-      final image = pw.MemoryImage(File(img.path).readAsBytesSync());
+    for (var _image in _images) {
+      final image = pw.MemoryImage(_image);
+
       pdf.addPage(pw.Page(
           build: (pw.Context context) => pw.Center(child: pw.Image(image))));
     }
@@ -34,17 +36,29 @@ class ImgToPdf {
     return pdfFile;
   }
 
-  Future<void> changeOrientation(int index) async {
-    final image = _images[index];
-    final img.Image orignalImg =
-        img.decodeImage(await File(image.path).readAsBytes())!;
-    final img.Image orientedImg = img.copyRotate(orignalImg, rotationAngle);
-    final orientedImgPath =
-        '/storage/emulated/0/Pdf Manager/Save/$rotationAngle _${image.path.split('/').last}';
-    final orientedImgFile =
-        await File(orientedImgPath).writeAsBytes(img.encodeJpg(orientedImg));
-    _images.removeAt(index);
-    _images.insert(index, XFile(orientedImgFile.path));
-    print(rotationAngle);
+  static void rotateImg(RotateParam param) {
+    final img.Image orignalImg = img.decodeImage(param.imageBytes)!;
+    final img.Image orientedImg = img.copyRotate(orignalImg, 90);
+
+    final orientedImgBytes = img.encodePng(orientedImg);
+    final rotateImageBytes = Uint8List.fromList(orientedImgBytes);
+    param.sendPort.send(rotateImageBytes);
   }
+
+  Future<void> changeOrientation(int index) async {
+    final imageBytes = _images[index];
+    var recievePort = ReceivePort();
+    await Isolate.spawn(
+        rotateImg, RotateParam(imageBytes, recievePort.sendPort));
+
+    final orientedImgBytes = await recievePort.first as Uint8List;
+    _images.removeAt(index);
+    _images.insert(index, orientedImgBytes);
+  }
+}
+
+class RotateParam {
+  final Uint8List imageBytes;
+  final SendPort sendPort;
+  RotateParam(this.imageBytes, this.sendPort);
 }

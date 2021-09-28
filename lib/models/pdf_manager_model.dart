@@ -52,8 +52,9 @@ class PdfManager extends ChangeNotifier {
     } else {
       await pdfFile.rename(newPath);
       PdfListDir listDir = _pdfListDirs[listName]!;
-      listDir.rename(_markedPdfFile.first, newFileName);
+      listDir.rename(_markedPdfFile.first, newPath);
       _pdfListDirs[listName] = listDir;
+      print(listDir);
 
       notifyListeners();
     }

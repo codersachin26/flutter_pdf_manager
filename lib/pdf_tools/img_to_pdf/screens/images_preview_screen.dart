@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf_manager/pdf_tools/img_to_pdf/models/img_to_pdf_model.dart';
@@ -22,6 +20,7 @@ class _ImagesPreviewScreenState extends State<ImagesPreviewScreen> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.red,
         title: Text("Img to Pdf"),
         actions: [
           IconButton(
@@ -66,8 +65,8 @@ class _ImagesPreviewScreenState extends State<ImagesPreviewScreen> {
                             width: MediaQuery.of(context).size.width,
                             margin: EdgeInsets.symmetric(horizontal: 5.0),
                             decoration: BoxDecoration(color: Colors.white),
-                            child: Image.file(
-                              File(img.path),
+                            child: Image.memory(
+                              img,
                               fit: BoxFit.contain,
                             ),
                           );

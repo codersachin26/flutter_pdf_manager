@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf_compressor/pdf_compressor.dart';
@@ -108,6 +110,9 @@ class _CompressorContainerState extends State<CompressorContainer> {
           ],
           backgroundColor: Colors.white,
         ));
+        Timer(Duration(seconds: 5), () {
+          ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+        });
       }
     });
   }

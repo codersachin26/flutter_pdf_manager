@@ -14,9 +14,10 @@ class PdfListDir {
     this.pdfFiles.removeWhere((file) => file.name == pdfFile.name);
   }
 
-  void rename(PdfFile pdfFile, String newName) {
+  void rename(PdfFile pdfFile, String newFilePath) {
     var index = this.pdfFiles.indexWhere((file) => file.name == pdfFile.name);
+
     pdfFiles[index] =
-        PdfFile(newName, pdfFiles[index].size, pdfFiles[index].path);
+        PdfFile(newFilePath.split('/').last, pdfFiles[index].size, newFilePath);
   }
 }

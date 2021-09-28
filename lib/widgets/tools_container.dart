@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pdf_manager/pdf_tools/compress_pdf/models/pdf_compressor.dart';
@@ -28,9 +31,13 @@ class ToolsContainer extends StatelessWidget {
                 iconColor: Colors.red,
                 onTap: () async {
                   final imagePicker = ImagePicker();
-                  await imagePicker.pickMultiImage().then((images) {
-                    if (images != null) {
-                      final imgToPdfTool = ImgToPdf(images);
+                  await imagePicker.pickMultiImage().then((pickedImages) {
+                    if (pickedImages != null) {
+                      final List<Uint8List> bytesImages =
+                          pickedImages.map((imageFile) {
+                        return File(imageFile.path).readAsBytesSync();
+                      }).toList();
+                      final imgToPdfTool = ImgToPdf(bytesImages);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
