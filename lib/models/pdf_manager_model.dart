@@ -16,7 +16,7 @@ class PdfManager extends ChangeNotifier {
     'Save': '/storage/emulated/0/Pdf Manager/Save',
     'Favorites': '/storage/emulated/0/Pdf Manager/Favorites',
     'Office': '/storage/emulated/0/Pdf Manager/Office',
-    'SDcard': '/storage/SD card'
+    'SDcard': '/storage/sdcard/'
   };
 
   Map<String, PdfListDir> _pdfListDirs = Map<String, PdfListDir>();

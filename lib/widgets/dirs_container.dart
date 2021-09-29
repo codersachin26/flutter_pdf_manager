@@ -72,7 +72,7 @@ class DirsContainer extends StatelessWidget {
                       iconData: Icons.sd_card_rounded,
                       name: "SD Card",
                       iconColor: Colors.black,
-                      dirPath: '/storage/SD card'),
+                      dirPath: ''),
                 ),
               ],
             ),

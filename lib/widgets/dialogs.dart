@@ -185,16 +185,8 @@ Dialog pdfNameDialog(BuildContext context, ImgToPdf imgToPdfTool) {
           SizedBox(
             height: 10,
           ),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: [
             TextButton(
-                style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20))),
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
-                    side: MaterialStateProperty.all<BorderSide>(
-                        BorderSide(color: Colors.red))),
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -207,14 +199,6 @@ Dialog pdfNameDialog(BuildContext context, ImgToPdf imgToPdfTool) {
                   ),
                 )),
             TextButton(
-              style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20))),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                  side: MaterialStateProperty.all<BorderSide>(
-                      BorderSide(color: Colors.lightGreen.shade400))),
               onPressed: () {
                 imgToPdfTool.convertToPdf(controller.text).then((file) {
                   Provider.of<PdfManager>(context, listen: false)

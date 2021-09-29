@@ -32,25 +32,28 @@ class EditBottomSheet extends StatelessWidget {
               name: "Delete",
               color: pdfManager.markedCount != 0 ? Colors.black : Colors.grey,
               onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (context) => deleteAlertDialog(context, dirName));
+                if (pdfManager.markedCount != 0)
+                  showDialog(
+                      context: context,
+                      builder: (context) =>
+                          deleteAlertDialog(context, dirName));
               },
             ),
-            CustomContainer(
-              iconData: Icons.picture_as_pdf_outlined,
-              name: "Tools",
-              color: pdfManager.markedCount != 0 ? Colors.black : Colors.grey,
-              onTap: () {},
-            ),
+            // CustomContainer(
+            //   iconData: Icons.picture_as_pdf_outlined,
+            //   name: "Tools",
+            //   color: pdfManager.markedCount != 0 ? Colors.black : Colors.grey,
+            //   onTap: () {},
+            // ),
             CustomContainer(
               iconData: Icons.file_copy,
               name: "Rename",
               color: pdfManager.markedCount == 1 ? Colors.black : Colors.grey,
               onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (context) => PdfRenameDialog(listName: dirName));
+                if (pdfManager.markedCount == 1)
+                  showDialog(
+                      context: context,
+                      builder: (context) => PdfRenameDialog(listName: dirName));
               },
             )
           ],
