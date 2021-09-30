@@ -56,14 +56,25 @@ Pdf Manager App is easy to use for pdf files and Tools.
 
 ### Packages which i used in this App
         flutter_pdfview  // pdf file viewer
+        
         provider:      // state management
+        
         carousel_slider: // image preview for image to pdf tool
+        
         image_picker: //  for easily pick images from storage
+        
         pdf:  // for pdf file creation
+        
         syncfusion_flutter_pdf: // password encryption
+        
         file_picker: // pick pdfs from storage
+        
         pdf_compressor:  // for pdf compressor tool
+        
         after_layout: // can call show dialog after build
+        
         share_plus:  // for sharing pdf file 
+        
         flutter_launcher_icons: // for creating app launcher icon
+        
         font_awesome_flutter: // for social media icons
