@@ -60,7 +60,7 @@ class _PdfCompressorScreenState extends State<PdfCompressorScreen> {
                 if (isFilePicked)
                   CompressorContainer(
                       pdfCompressorTool: pdfCompressorTool,
-                      setPdfCompressorState: resetPdfCompressorState)
+                      resetPdfCompressorState: resetPdfCompressorState)
               ],
             ),
           ),
@@ -73,12 +73,12 @@ class _PdfCompressorScreenState extends State<PdfCompressorScreen> {
 // pdf compressor container
 class CompressorContainer extends StatefulWidget {
   final PdfCompressorTool pdfCompressorTool;
-  final VoidCallback setPdfCompressorState;
+  final VoidCallback resetPdfCompressorState;
 
   CompressorContainer(
       {Key? key,
       required this.pdfCompressorTool,
-      required this.setPdfCompressorState})
+      required this.resetPdfCompressorState})
       : super(key: key);
 
   @override
@@ -93,7 +93,9 @@ class _CompressorContainerState extends State<CompressorContainer> {
       if (value.isEmpty) {
         final pdfManager = Provider.of<PdfManager>(context, listen: false);
         pdfManager.addPdfToList('Save', widget.pdfCompressorTool.getPdfFile);
-        widget.setPdfCompressorState();
+        widget.resetPdfCompressorState();
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('File compressed successfully')));
       } else {
         ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
           leading: Icon(Icons.info),

@@ -102,6 +102,8 @@ class _SetPasswordContainerState extends State<SetPasswordContainer> {
           final pdfManager = Provider.of<PdfManager>(context, listen: false);
           pdfManager.addPdfToList('Save', widget.pdfEncryptTool.getPdfFile);
           widget.setPdfEncryptionState();
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('File encrypted successfully')));
         } else {
           ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
             content: Text(value),

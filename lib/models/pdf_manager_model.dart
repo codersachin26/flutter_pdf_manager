@@ -52,7 +52,11 @@ class PdfManager extends ChangeNotifier {
     } else {
       await pdfFile.rename(newPath);
       PdfListDir listDir = _pdfListDirs[listName]!;
-      listDir.rename(_markedPdfFile.first, newPath);
+      var index = listDir.pdfFiles
+          .indexWhere((file) => file.name == _markedPdfFile.first.name);
+
+      final newPdf = PdfFile(newFileName, _markedPdfFile.first.size, newPath);
+      listDir.update(newPdf, index);
       _pdfListDirs[listName] = listDir;
       print(listDir);
 
@@ -65,13 +69,13 @@ class PdfManager extends ChangeNotifier {
     while (_markedPdfFile.isNotEmpty) {
       PdfFile file = _markedPdfFile.removeLast();
       File sourceFile = File(file.path);
+      final newPath =
+          '/storage/emulated/0/Pdf Manager/$to/${file.path.split('/').last}';
       try {
-        await sourceFile.rename(
-            '/storage/emulated/0/Pdf Manager/$to/${file.path.split('/').last}');
+        await sourceFile.rename(newPath);
       } on FileSystemException catch (e) {
         print(e.osError);
-        await sourceFile.copy(
-            '/storage/emulated/0/Pdf Manager/$to/${file.path.split('/').last}');
+        await sourceFile.copy(newPath);
         await sourceFile.delete();
       }
       final addListName = to;
@@ -81,7 +85,8 @@ class PdfManager extends ChangeNotifier {
       removePdfFromList(removeListName, file);
 
       // add to PdfList model
-      addPdfToList(addListName, file);
+      final newFile = PdfFile(file.name, file.size, newPath);
+      addPdfToList(addListName, newFile);
     }
 
     notifyListeners();
