@@ -7,31 +7,31 @@ Pdf Manager App is easy to use for pdf files and Tools.
 
 ## App Features
 
-### 1.Pdf Viwer
+### 1. Pdf Viwer
  ![Alt Text](https://github.com/codersachin26/flutter_pdf_manager/blob/main/screenshots/pdf_viewer.gif)
  
  
-### 2.Image To Pdf Tool
+### 2. Image To Pdf Tool
  ![Alt Text](https://github.com/codersachin26/flutter_pdf_manager/blob/main/screenshots/img_to_pdf_tool.gif)
  
  
-### 3.Pdf Share
+### 3. Pdf Share
  ![Alt Text](https://github.com/codersachin26/flutter_pdf_manager/blob/main/screenshots/pdf_share.gif)
  
  
 ### 4.Pdf Rename
  ![Alt Text](https://github.com/codersachin26/flutter_pdf_manager/blob/main/screenshots/pdf_rename.gif)
  
-### 5.Pdf Move
+### 5. Pdf Move
  ![Alt Text](https://github.com/codersachin26/flutter_pdf_manager/blob/main/screenshots/move_pdf.gif)
  
-### 6.Pdf Compressor Tool
+### 6. Pdf Compressor Tool
  ![Alt Text](https://github.com/codersachin26/flutter_pdf_manager/blob/main/screenshots/compressor_tool.gif)
  
-### 7.Pdf Deletion
+### 7. Pdf Deletion
  ![Alt Text](https://github.com/codersachin26/flutter_pdf_manager/blob/main/screenshots/pdf_deletion.gif)
  
-### 7.Pdf Encryption Tool
+### 8. Pdf Encryption Tool
  ![Alt Text](https://github.com/codersachin26/flutter_pdf_manager/blob/main/screenshots/pdf_encryption_tool.gif)
  
 
