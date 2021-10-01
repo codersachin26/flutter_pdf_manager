@@ -1,6 +1,6 @@
 # Pdf Manager
 
-Pdf Manager App is easy to use for pdf files and Tools.
+Pdf Manager App for pdf files and Tools.
 
 <img src="https://github.com/codersachin26/flutter_pdf_manager/blob/main/screenshots/pdf%20manager%20home%20UI.jpg" alt="Your image title" width="250"/>
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
