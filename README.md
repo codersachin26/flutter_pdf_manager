@@ -1,6 +1,7 @@
 # Pdf Manager
 
-Pdf Manager App for pdf files and Tools.
+Pdf Manager App for pdf files and Tools and built with Flutter and the purpose of this app is to manage pdf files in different - different directories so that users can easily find a pdf file.
+App has some pdf tools also like - IMG to pdf, pdf compression, pdf encryption.
 
 <img src="https://github.com/codersachin26/flutter_pdf_manager/blob/main/screenshots/pdf%20manager%20home%20UI.jpg" alt="Your image title" width="250"/>
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
